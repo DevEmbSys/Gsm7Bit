@@ -23,11 +23,11 @@ char sevenbitextended[L_7BITEXTENDED][2] = {
 
 int gsm7bit_to_ascii(char *in, int bytlen, char *out)
 {
-	int i = 0, j = 0, count_bit = 0;								/*	count_bit - количество значащих бит в промежуточной переменной data
-																		i - счетчик входного массива
-																		j - счетчик выходного массива	*/
+	int i = 0, j = 0, count_bit = 0;		/*	count_bit - количество значащих бит в промежуточной переменной data
+								i - счетчик входного массива
+								j - счетчик выходного массива	*/
 
-	int data = 0x0;													/*Промежуточная переменная для вычленения 7-и битного слова*/
+	int data = 0x0;						/*Промежуточная переменная для вычленения 7-и битного слова*/
 
 	for( i = 0, j = 0;i < bytlen | count_bit > 0;j++)  
 	{
@@ -45,7 +45,7 @@ int gsm7bit_to_ascii(char *in, int bytlen, char *out)
 		out[j] = data & 0x7f;
 		data >>= 7;
 		count_bit -= 7;
-		if(j >= 1 && out[j-1] == 0x1b)								/*Проверка на символы  ^ { } [ ] \ ~ | [пробел] €*/
+		if(j >= 1 && out[j-1] == 0x1b)				/*Проверка на символы  ^ { } [ ] \ ~ | [пробел] €	*/
 		{
 			for(int k = 0; k < L_7BITEXTENDED; k++)
 			{
@@ -64,10 +64,10 @@ int gsm7bit_to_ascii(char *in, int bytlen, char *out)
 
 void ascii_to_gsm7bit(char *in, int bytlen, char *out)
 {
-	int i = 0, j = 0, count_bit = 0;						/*	count_bit - количество значащих бит в промежуточной переменной data
+	int i = 0, j = 0, count_bit = 0;					/*	count_bit - количество значащих бит в промежуточной переменной data
 																		i - счетчик входного массива
 																		j - счетчик выходного массива	*/
-	int data = 0;											/*Промежуточная переменная для вычленения 7-и битного слова*/
+	int data = 0;								/*Промежуточная переменная для вычленения 7-и битного слова*/
 	int mask = 0;
 
 
@@ -85,7 +85,6 @@ void ascii_to_gsm7bit(char *in, int bytlen, char *out)
 						data >>= 8;
 						count_bit -= 8;
 						j++;
-						//cout << " "<<count_bit;
 					}
 				}
 				
@@ -123,12 +122,12 @@ void ascii_to_gsm7bit(char *in, int bytlen, char *out)
 int _tmain(int argc, _TCHAR* argv[])
 {
 	char gsm7Bit[] = { 
-	0x1B,0x1E,0xB2,0xCC,0x66,0xBF,0xAF,0x6F,0x39,0x9B,0x1C,0xAA,0x01 };			/*    Запись [HelloWorld!5 в Gsm7Bit кодировке    
-																		конвертер ASCII в  Gsm7Bit    http://smstools3.kekekasvi.com/topic.php?id=288   */
-	char buff[128]={0};															/*    Результирующий массив     */
+	0x1B,0x1E,0xB2,0xCC,0x66,0xBF,0xAF,0x6F,0x39,0x9B,0x1C,0xAA,0x01 };	/*    Запись [HelloWorld!5 в Gsm7Bit кодировке
+								конвертер ASCII в  Gsm7Bit    http://smstools3.kekekasvi.com/topic.php?id=288   */
+	char buff[128]={0};							/*    Результирующий массив     */
 	char ascii[] = "[Ac7?~8";
 
-	gsm7bit_to_ascii(gsm7Bit,sizeof(gsm7Bit), buff);							/* Gsm 7bit to ASCII */
+	gsm7bit_to_ascii(gsm7Bit,sizeof(gsm7Bit), buff);		/* Gsm 7bit to ASCII */
 
 	printf("\nGsm 7bit:\t\t");
 
@@ -143,11 +142,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	printf("\n\nString ASCII:\t\t%s\n", buff);
 
 	memset(buff,0,sizeof(buff));
-	ascii_to_gsm7bit(ascii,sizeof(ascii),buff);									/* ASCII to Gsm 7bit */
+	ascii_to_gsm7bit(ascii,sizeof(ascii),buff);			/* ASCII to Gsm 7bit */
 
 	printf("\n\nString:\t\t\t[Ac7_~8\n\nASCII to Gsm 7bit:\t");
 
-	for(int i = 0; i < sizeof(buff) && buff[i]!=0x0d; i++)						/* Замена ASCII 0x00 в Gsm 7Bit на 0x0d (Carriage Return) */
+	for(int i = 0; i < sizeof(buff) && buff[i]!=0x0d; i++)		/* Замена ASCII 0x00 в Gsm 7Bit на 0x0d (Carriage Return) */
 		printf(" %02x", buff[i]&0xff);
 
 	cout << "\n\n";
