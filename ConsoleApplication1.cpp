@@ -64,16 +64,16 @@ int gsm7bit_to_ascii(char *in, int bytlen, char *out)
 
 void ascii_to_gsm7bit(char *in, int bytlen, char *out)
 {
-	int i = 0, j = 0, count_bit = 0;					/*	count_bit - количество значащих бит в промежуточной переменной data
-																		i - счетчик входного массива
-																		j - счетчик выходного массива	*/
-	int data = 0;								/*Промежуточная переменная для вычленения 7-и битного слова*/
+	int i = 0, j = 0, count_bit = 0;			/*	count_bit - количество значащих бит в промежуточной переменной data
+									i - счетчик входного массива
+									j - счетчик выходного массива	*/
+	int data = 0;						/*	Промежуточная переменная для вычленения 7-и битного слова*/
 	int mask = 0;
 
 
 	for( i = 0, j = 0;i < bytlen | count_bit > 0;)  
 	{
-		for(int k = 0; k < L_7BITEXTENDED; k++)				/*Проверка на символы  ^ { } [ ] \ ~ | [пробел] €*/
+		for(int k = 0; k < L_7BITEXTENDED; k++)		/*Проверка на символы  ^ { } [ ] \ ~ | [пробел] €*/
 		{
 			if(in[i] == sevenbitextended[k][0])
 			{
@@ -89,7 +89,7 @@ void ascii_to_gsm7bit(char *in, int bytlen, char *out)
 				}
 				
 				mask = 0;
-				for(int l = 0; l < count_bit; l++) mask |= (1 << l);						/*Создание маски значащих битов в промежуточной переменной data*/
+				for(int l = 0; l < count_bit; l++) mask |= (1 << l);			/*Создание маски значащих битов в промежуточной переменной data*/
 				data = (((sevenbitextended[k][1] << 7)|0x1b) << count_bit)| (data & mask);
 				count_bit += 14;
 				i++;
@@ -98,7 +98,7 @@ void ascii_to_gsm7bit(char *in, int bytlen, char *out)
 		if((count_bit + 8) < 32)
 		{
 			mask = 0;						
-			for(int k = 0; k < count_bit; k++) mask |= (1 << k);	/*Создание маски значащих битов в промежуточной переменной data*/
+			for(int k = 0; k < count_bit; k++) mask |= (1 << k);		/*Создание маски значащих битов в промежуточной переменной data*/
 			if(i<bytlen)
 			{
 				data = (int)(in[i] << count_bit) | (data & mask);
